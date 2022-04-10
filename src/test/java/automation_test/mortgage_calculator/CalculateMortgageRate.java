@@ -1,32 +1,10 @@
 package automation_test.mortgage_calculator;
 
-import command_providers.ActOn;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import page_objects.Home;
 import utiilities.DateUtils;
 
-import java.time.Duration;
-
-public class CalculateMortgageRate {
-    private static final Logger LOGGER = LogManager.getLogger(CalculateMortgageRate.class);
-    WebDriver driver;
-
-    @BeforeMethod
-    public void browserInitialization() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-        LOGGER.info("----------Test Name: Calculate Monthly Mortgage Rate-----------");
-        ActOn.browser(driver).openBrowser("https://www.mortgagecalculator.org/");
-    }
-
+public class CalculateMortgageRate extends BaseClass {
     @Test
     public void calculateMonthlyPayment() {
         String date = DateUtils.returnNextMonth();
@@ -50,11 +28,5 @@ public class CalculateMortgageRate {
                 .selectBuyOrRefinance("Buy")
                 .clickOnCalculate()
                 .validateTotalMonthlyPayment("1,611.85");
-    }
-
-    @AfterMethod
-    public void closeBrowser() {
-        ActOn.browser(driver).closeBrowser();
-        LOGGER.info("----------End Test: Calculate Monthly Mortgage Rate-----------");
     }
 }
